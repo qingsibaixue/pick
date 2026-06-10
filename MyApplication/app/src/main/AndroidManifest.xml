@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.goldmod">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="GoldMod"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyApplication">
+        <meta-data
+            android:name="xposedclass"
+            android:value="com.example.goldmod.MainHook" />
+        <!-- 以下三行是 Xposed 模块必需的声明 -->
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="Modify UserAccount gold and bala" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="82" />
+
+    </application>
+</manifest>
