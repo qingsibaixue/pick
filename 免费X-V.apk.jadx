@@ -1,0 +1,101 @@
+{
+  "projectVersion": 2,
+  "files": [
+    "C:\\Users\\mimidengdeng\\Downloads\\免费X-V.apk"
+  ],
+  "treeExpansionsV2": [
+    "p:android",
+    "p:androidx"
+  ],
+  "codeData": {
+    "comments": [],
+    "renames": []
+  },
+  "openTabs": [
+    {
+      "type": "class",
+      "tabPath": "androidx.asynclayoutinflater.R",
+      "subPath": "java",
+      "caret": 706,
+      "view": {
+        "x": 0,
+        "y": 0
+      },
+      "active": false,
+      "pinned": false,
+      "bookmarked": false,
+      "hidden": false,
+      "previewTab": false
+    },
+    {
+      "type": "class",
+      "tabPath": "com.grass.mh.utils.FastDialogUtils",
+      "subPath": "java",
+      "caret": 72178,
+      "view": {
+        "x": 0,
+        "y": 24865
+      },
+      "active": false,
+      "pinned": false,
+      "bookmarked": false,
+      "hidden": false,
+      "previewTab": false
+    },
+    {
+      "type": "class",
+      "tabPath": "com.grass.mh.player.BrushVideoPlayer",
+      "subPath": "java",
+      "caret": 34618,
+      "view": {
+        "x": 0,
+        "y": 13541
+      },
+      "active": false,
+      "pinned": false,
+      "bookmarked": false,
+      "hidden": false,
+      "previewTab": false
+    },
+    {
+      "type": "class",
+      "tabPath": "com.grass.mh.player.BrushVideoPlayerNewCome",
+      "subPath": "java",
+      "caret": 31743,
+      "view": {
+        "x": 0,
+        "y": 12785
+      },
+      "active": false,
+      "pinned": false,
+      "bookmarked": false,
+      "hidden": false,
+      "previewTab": false
+    },
+    {
+      "type": "class",
+      "tabPath": "com.grass.mh.ui.home.VideoPlayActivity",
+      "subPath": "java",
+      "caret": 76226,
+      "view": {
+        "x": 6,
+        "y": 25781
+      },
+      "active": true,
+      "pinned": false,
+      "bookmarked": false,
+      "hidden": false,
+      "previewTab": false
+    }
+  ],
+  "cacheDir": "C:\\Users\\mimidengdeng\\AppData\\Local\\skylot\\jadx\\cache\\projects\\免费X-V-afff331ab5ad2729d113faa8c2eebeea",
+  "enableLiveReload": false,
+  "searchHistory": [
+    "金购买",
+    "VIP跳过",
+    "购买失败"
+  ],
+  "searchResourcesFilter": "$TEXT",
+  "searchResourcesSizeLimit": 0,
+  "pluginOptions": {}
+}
