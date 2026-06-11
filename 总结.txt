@@ -10,4 +10,6 @@ LSposed
 
 电脑
 融合app
+https://github.com/JingMatrix/LSPatch/releases
 java -jar lspatch.jar 免费X-V.apk -m 2.apk -o patched
+
