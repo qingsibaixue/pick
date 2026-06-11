@@ -1,0 +1,13 @@
+hook
+安卓
+多开鸭
+https://www.duokaiya.com/ 
+狐狸面具 kitsune Mask 
+模块加载
+LSposed
+
+
+
+电脑
+融合app
+java -jar lspatch.jar 免费X-V.apk -m 2.apk -o patched
