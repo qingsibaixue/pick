@@ -500,18 +500,55 @@ public class MainHook implements IXposedHookLoadPackage {
 
     // ============================================================
     // 13. SplashActivity 开屏广告 adShowMine
-    //    void adShowMine(List<AdBaseInfoBean> list)
+    //    真相: adShowMine 跑完后**不主动跳转**, 要等 6 秒 CountDownTimer 结束
+    //          → loadFinish=true → 用户点 tvTimeClose 按钮 → startActivity(MainActivity)
+    //    卡死原因: 之前用 XC_MethodReplacement 把整个方法体替换了
+    //              → 倒计时根本不启动 → loadFinish 永远 false → 永远卡在开屏
+    //    修复: beforeHookedMethod 把入参 list 改成 empty, 让 list.size()==0 走默认分支
+    //           跳过所有广告图片显示, 但 CountDownTimer 依然会跑 (走完 6 秒)
+    //           afterHookedMethod 主动调 startMainUI() 跳过 6 秒等待, 立刻跳到主页
+    //           反射调用避免被 Lint/编译期检测 (startMainUI 是 public)
     // ============================================================
     private void hookSplashAd(XC_LoadPackage.LoadPackageParam lpparam) {
         try {
-            Class<?> cls = XposedHelpers.findClass(ACT_SPLASH, lpparam.classLoader);
-            XposedHelpers.findAndHookMethod(cls, "adShowMine",
+            final Class<?> splashCls = XposedHelpers.findClass(ACT_SPLASH, lpparam.classLoader);
+            final Class<?> mainCls = XposedHelpers.findClass("com.grass.mh.ui.MainActivity", lpparam.classLoader);
+            XposedHelpers.findAndHookMethod(splashCls, "adShowMine",
                     List.class,
-                    new XC_MethodReplacement() {
+                    new XC_MethodHook() {
                         @Override
-                        protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                            XposedBridge.log("[" + TAG + "] SplashActivity.adShowMine 拦截 (开屏6s)");
-                            return null;
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            // 1. 把入参 list 改成 empty, 走 list.size()==0 默认分支
+                            //    跳过所有 adImageView 设置, 但不阻拦 CountDownTimer
+                            param.args[0] = new ArrayList();
+                            XposedBridge.log("[" + TAG + "] SplashActivity.adShowMine 入参置空, 跳过广告");
+                        }
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            // 2. 原方法走完, CountDownTimer 6 秒倒计时在跑
+                            //    我们反射调 startMainUI() 主动跳到主页, 不等 6 秒
+                            final Object splash = param.thisObject;
+                            android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        XposedHelpers.callMethod(splash, "startMainUI");
+                                        XposedHelpers.callMethod(splash, "finish");
+                                        XposedBridge.log("[" + TAG + "] SplashActivity.startMainUI() 主动调用");
+                                    } catch (Throwable inner) {
+                                        XposedBridge.log("[" + TAG + "] startMainUI 失败: " + inner);
+                                        try {
+                                            android.content.Intent intent = new android.content.Intent((android.content.Context) splash, mainCls);
+                                            ((android.app.Activity) splash).startActivity(intent);
+                                            ((android.app.Activity) splash).finish();
+                                            XposedBridge.log("[" + TAG + "] 兜底 startActivity(MainActivity) 成功");
+                                        } catch (Throwable e2) {
+                                            XposedBridge.log("[" + TAG + "] 兜底也失败: " + e2);
+                                        }
+                                    }
+                                }
+                            }, 50L);  // 延迟 50ms 让 adShowMine 跑完, 避免 race condition
                         }
                     });
             XposedBridge.log("[" + TAG + "] OK SplashActivity.adShowMine");
